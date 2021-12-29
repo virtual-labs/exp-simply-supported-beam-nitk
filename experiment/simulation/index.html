@@ -1,13 +1,100 @@
 <!DOCTYPE html>
-<html>
-<head>
-	<!-- Add CSS at the head of HTML file -->
-    <link rel="stylesheet" href="./css/main.css">
-</head>
-<body>
-		<!-- Your code goes here-->
+<html lang="en">
+ <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="./css/MOMstyle.css" />
+    <script src='./js/jquery.min.js'></script>
+    <script src='./js/jquery-ui.min.js'></script>
+    <script src="./js/script.js"></script>
+ </head>
+ <body onload="startsim(); varinit();">
+  <title>Simply Supported Beam-Free Vibration</title>
+<!-- Defining Container for Simulation -->
+<div id="container">
+    <!-- Replace TITLE with simulation title to be displayed next to logo-->
+    <div id="simtitle">SINGLE DEGREE OF FREEDOM SYSTEM</div>
+    <!-- Region for simulation display -->
+    <canvas id="simscreen" height="400px" width="550px"></canvas>
+    <!-- Region for graph display -->
+    <canvas id="graphscreen" height="400px" width="550px"></canvas>
+    <!-- Cross section display -->
+    <div id="crosssection"><img id="crosssec" title="" src="./images/crossI.PNG"/><img id="massSystem" src="./images/massSystem.PNG" title=""/></div>
+    <div id="textonarea"><p style="font-size: 20px" id="text1"></p>
+        <p style="font-size: 20px" id="text2"></p>
+    </div>
+    <div id="titleincanvas">Simply Supported Beam-Free Vibration</div>
+    <!-- Region for result display -->
+    <div id="commentboxleft">
+        <p>For other section:</p>
+     <div id="othercrossec">
+         <p title="Area">C/s Area(m^2)<input id="CsArea"/></p>
+         <p>Ixx(m^4) <input id="Ivalue"/></p>
+     </div>
+    </div>
+    <div id="commentboxright">
+        <p id="p1">m=<span id="mass"></span></p>
+        <p id="p2">k=<span id="k"></span></p>
+        <p id="p3">c=<span id="c"></span></p>
+        <div id="omegavalues">
+	    <p>&#969;<sub>n</sub>=<span id="wn"></span></p>
+            <p>&#969;<sub>d</sub>=<span id="wd"></span></p>
+            
+        </div>
+    </div>
+    <!-- DND-Title of region for variables display -->
+    <div id="vartitle">VARIABLES</div>
+    <!-- Region for Input parameters of simulation -->
+    <div id="variables">
+        <div class="variable">
+            <div id="materialdrop">
+                <p>
+                    Materials:
+                    <select id="metals" title="STEEL &#10;&#961;=7750kg/m^3 E=200Gpa&#10;ALUMINIUM&#10;&#961;=2712kg/m^3 E=70.33Gpa&#10;BRONZE&#10;&#961;=8304kg/m^3 E=111.006Gpa">
+                        <option value="steel">Steel</option>
+                        <option value="aluminium">Aluminium</option>
+                        <option value="Bronze">Bronze</option>
+                    </select>
+                </p>
 
-	<!-- Add JS at the bottom of HTML file --> 
-        <script src="./js/main.js"></script>
-</body>
+            </div>
+            <div id="section">
+                <p>
+                    Sections:
+                    <select id="sections">
+                        <option>I section</option>
+                        <option>T section</option>
+                        <option>C section</option>
+                        <option>L section</option>
+                        <option>Square section</option>
+                        <option>Circular section</option>
+                        <option>Other section</option>
+                    </select>
+                </p>
+
+            </div>
+           <div class="varname"><p title="Length">Length(mm)</p>
+                <input id="lengthspinner"/></div>
+            <div id="lengthslider"></div><br>
+            <div class="varname"><p title="Damping Ratio" style="font-size: 14px;">Damping Ratio</p>
+                <input id="dampspinner"/></div>
+            <div id="dampslider"></div><br>
+            
+	 <div class="varname"><p title="Mass" id = "centremasstxt">Centre Mass(kg)</p>
+                <input id="massspinner"/></div>
+            <div id="massslider"></div><br>
+        </div>
+    </div>
+    <!-- DND-Title of region for controls display -->
+ <div id="ctrltitle">CONTROLS</div>
+    <!-- DND-Copyright display-->
+ <div id="copyright" title="Developer : SOLVEr"> Copyright &copy; SOLVE The Virtual Lab @ NITK Surathkal </div>
+  <div id="controls">
+      <!-- Region for User controls of simulation -->
+    <img id="playpausebutton" onclick="simstate()" src="./images/blueplaydull.png" />
+    <img id="graphbutton" onclick="changescreen()" src="./images/graphbutton.png" />
+  </div>
+ </div> <!-- Container div close -->
+
+ </body>
 </html>
