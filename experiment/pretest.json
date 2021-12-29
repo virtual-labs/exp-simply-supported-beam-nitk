@@ -55,10 +55,10 @@
     {
       "question": "",
       "answers": {
-        "a": "<img src='images/equations/abc.png' height=50 width=50/>",
-        "b": "<img src='images/equations/vib2.png' height=50 width=50/>",
-        "c": "<img src='images/equations/vib3.png' height=50 width=50/>",
-        "d": "<img src='images/equations/vib4.png' height=50 width=50/>"
+        "a": "<img src='./images/abc.png' height=50 width=50/>",
+        "b": "<img src='./images/vib2.png' height=50 width=50/>",
+        "c": "<img src='./images/vib3.png' height=50 width=50/>",
+        "d": "<img src='./images/vib4.png' height=50 width=50/>"
       },
       "explanations": {
         "a": "",
