@@ -53,7 +53,7 @@
       "difficulty": ""
     },
     {
-      "question": "",
+      "question": "For a simply supported beam with a point load at the middle, The stiffness is",
       "answers": {
         "a": "<img src='./images/abc.png' height=50 width=50/>",
         "b": "<img src='./images/vib2.png' height=50 width=50/>",
