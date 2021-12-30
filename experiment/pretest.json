@@ -2,38 +2,289 @@
   "version": 2.0,
   "questions": [
     {
-      "question": "This is a Sample Question 1?",
+      "question": "A body is said to undergo free vibration, when?",
       "answers": {
-        "a": "answer1",
-        "b": "answer2",
-        "c": "answer3",
-        "d": "answer4"
+        "a": "It vibrates in free space",
+        "b": "It vibrates freely with no force acting on it",
+        "c": "The force causing the initial displacement is removed",
+        "d": "It vibrates freely with no resistive force acting on it"
       },
       "explanations": {
-        "a": "Explanation 1  <a href='www.google.com'>here</a>",
-        "b": "Explanation 2",
-        "c": "Explanation 2",
-        "d": "Explanation 2"
+        "a": "",
+        "b": "",
+        "c": "",
+        "d": ""
       },
-      "correctAnswer": "a",
-      "difficulty": "beginner"
+      "correctAnswer": "b",
+      "difficulty": ""
     },
     {
-      "question": "This is a Sample Question 2?",
+      "question": "If energy is lost in any way during vibration, the system can be considered to be ?",
       "answers": {
-        "a": "answer1",
-        "b": "answer2",
-        "c": "answer3",
-        "d": "answer4"
+        "a": "Damped",
+        "b": "Undamped",
+        "c": "Underdamped",
+        "d": "Overdamped"
       },
       "explanations": {
-        "a": "Explanation 1  <a href='www.google.com'>here</a>",
-        "b": "Explanation 2",
-        "c": "Explanation 2",
-        "d": "Explanation 2"
+        "a": "",
+        "b": "",
+        "c": "",
+        "d": ""
+      },
+      "correctAnswer": "a",
+      "difficulty": ""
+    },
+    {
+      "question": "A system is said to be a Simply Supported beam system if it has a hinged connection at one end and .................. connection in other end.",
+      "answers": {
+        "a": "Roller",
+        "b": "Hinged",
+        "c": "Fixed",
+        "d": "Free"
+      },
+      "explanations": {
+        "a": "",
+        "b": "",
+        "c": "",
+        "d": ""
+      },
+      "correctAnswer": "a",
+      "difficulty": ""
+    },
+    {
+      "question": "For a simply supported beam with a point load at the middle, The stiffness is",
+      "answers": {
+        "a": "<img src='./images/abc.png' height=50 width=50/>",
+        "b": "<img src='./images/vib2.png' height=50 width=50/>",
+        "c": "<img src='./images/vib3.png' height=50 width=50/>",
+        "d": "<img src='./images/vib4.png' height=50 width=50/>"
+      },
+      "explanations": {
+        "a": "",
+        "b": "",
+        "c": "",
+        "d": ""
+      },
+      "correctAnswer": "a",
+      "difficulty": ""
+    },
+    {
+      "question": "In free vibration experiment the damping may occur due to",
+      "answers": {
+        "a": "Friction at support",
+        "b": "Hysteresis damping",
+        "c": "Friction at support and Hysteresis damping",
+        "d": "None of the above"
+      },
+      "explanations": {
+        "a": "",
+        "b": "",
+        "c": "",
+        "d": ""
       },
       "correctAnswer": "c",
-      "difficulty": "beginner"
+      "difficulty": ""
+    },
+    {
+      "question": "The moment of inertia of the beam cross-section and for a circular cross-section it is given as,?",
+      "answers": {
+        "a": "I=pi/64d<sup>4</sup>",
+        "b": "I=pi/32d<sup>4</sup>",
+        "c": "I=pi/62d<sup>4</sup>",
+        "d": "I=pi/34d<sup>4</sup>"
+      },
+      "explanations": {
+        "a": "",
+        "b": "",
+        "c": "",
+        "d": ""
+      },
+      "correctAnswer": "a",
+      "difficulty": ""
+    },
+    {
+      "question": "The natural frequency of a system with mass m damping c and stiffness k is given by _____",
+      "answers": {
+        "a": "(k/c)<sup>0.45</sup>",
+        "b": "(k/c)<sup>0.5</sup>",
+        "c": "(k/c)<sup>0.25</sup>",
+        "d": "(k/c)<sup>0.15</sup>"
+      },
+      "explanations": {
+        "a": "",
+        "b": "",
+        "c": "",
+        "d": ""
+      },
+      "correctAnswer": "b",
+      "difficulty": ""
+    },
+    {
+      "question": "When a system vibrates in a fluid medium, the damping is _____",
+      "answers": {
+        "a": "Coulomb",
+        "b": "solid",
+        "c": "structural",
+        "d": "Viscous"
+      },
+      "explanations": {
+        "a": "",
+        "b": "",
+        "c": "",
+        "d": ""
+      },
+      "correctAnswer": "d",
+      "difficulty": ""
+    },
+    {
+      "question": "The mechanical clock represents a _____ pendulum.",
+      "answers": {
+        "a": "complex",
+        "b": "compound",
+        "c": "simple",
+        "d": "normal"
+      },
+      "explanations": {
+        "a": "",
+        "b": "",
+        "c": "",
+        "d": ""
+      },
+      "correctAnswer": "c",
+      "difficulty": ""
+    },
+    {
+      "question": "Systems undergo dangerously large oscillations at _____",
+      "answers": {
+        "a": "excitation",
+        "b": "Resonance",
+        "c": "damped frequency",
+        "d": "logarithmic decrement"
+      },
+      "explanations": {
+        "a": "",
+        "b": "",
+        "c": "",
+        "d": ""
+      },
+      "correctAnswer": "b",
+      "difficulty": ""
+    },
+    {
+      "question": "A vibratory system consists of a spring, damper, and _____.",
+      "answers": {
+        "a": "Frame",
+        "b": "Rope",
+        "c": "Mass",
+        "d": "stiffness"
+      },
+      "explanations": {
+        "a": "",
+        "b": "",
+        "c": "",
+        "d": ""
+      },
+      "correctAnswer": "c",
+      "difficulty": ""
+    },
+    {
+      "question": "If a motion repeats after equal Intervals of time, it is called a _____ motion.",
+      "answers": {
+        "a": "nonperiodic",
+        "b": "random",
+        "c": "periodic",
+        "d": "frequent"
+      },
+      "explanations": {
+        "a": "",
+        "b": "",
+        "c": "",
+        "d": ""
+      },
+      "correctAnswer": "c",
+      "difficulty": ""
+    },
+    {
+      "question": "The time taken to complete one cycle of motion is called the _____ of vibration.",
+      "answers": {
+        "a": "one cycle",
+        "b": "time period",
+        "c": "amplitude",
+        "d": "frequency"
+      },
+      "explanations": {
+        "a": "",
+        "b": "",
+        "c": "",
+        "d": ""
+      },
+      "correctAnswer": "b",
+      "difficulty": ""
+    },
+    {
+      "question": "The number of cycles per unit time is called the _____ of vibration.",
+      "answers": {
+        "a": "resonance",
+        "b": "frequency",
+        "c": "periodic motion",
+        "d": "time period"
+      },
+      "explanations": {
+        "a": "",
+        "b": "",
+        "c": "",
+        "d": ""
+      },
+      "correctAnswer": "b",
+      "difficulty": ""
+    },
+    {
+      "question": "Systems with a finite number of degrees of freedom are called _____ systems.",
+      "answers": {
+        "a": "discrete",
+        "b": "continuous",
+        "c": "linear",
+        "d": "non-linear"
+      },
+      "explanations": {
+        "a": "",
+        "b": "",
+        "c": "",
+        "d": ""
+      },
+      "correctAnswer": "a",
+      "difficulty": ""
+    },
+    {
+      "question": "The number of degrees of freedom of a system denotes the minimum number of independent coordinate",
+      "answers": {
+        "a": "false",
+        "b": "true"
+      },
+      "explanations": {
+        "a": "",
+        "b": ""
+      },
+      "correctAnswer": "b",
+      "difficulty": ""
+    },
+    {
+      "question": "If a system vibrates due to initial disturbance only, it is called _____ vibration.",
+      "answers": {
+        "a": "free",
+        "b": "forced",
+        "c": "damped",
+        "d": "undamped"
+      },
+      "explanations": {
+        "a": "",
+        "b": "",
+        "c": "",
+        "d": ""
+      },
+      "correctAnswer": "a",
+      "difficulty": ""
     }
   ]
 }
