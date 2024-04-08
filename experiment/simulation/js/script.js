@@ -1,44 +1,166 @@
-var time = 0; //keeps track of the time of the animation
-var beamlength = 1500; //Length of the beam inmm
-var simTimeId; //for animation function
-var pauseTime; //for running animation when simulation is paused
-var rho = 7750; //Density in kg/m^3
-var A; //Area in m^2
-var massbeam = (rho * A * beamlength) / 1000; //Mass of the beam=volume * density
+// Experiment parameters
+const beamInfo = [
+  {
+    ISMB: 100,
+    h: "100 mm",
+    b: "75mm",
+    t1: "4mm",
+    t2: "7mm",
+    Ixx: "257.5 cm<sup>4</sup>",
+    Iyy: "40.8 cm<sup>4</sup>",
+    Area: "14.6 cm<sup>2</sup>",
+    A: 14.6e-4,
+    I: 257.5e-8,
+    path: "images/crossI.PNG",
+  },
+  {
+    ISNT: 150,
+    h: "150 mm",
+    b: "150mm",
+    t1: "10mm",
+    t2: "10 mm",
+    Ixx: "541.1 cm<sup>4</sup>",
+    Iyy: "250.3 cm<sup>4</sup>",
+    Area: "28.88 cm<sup>2</sup>",
+    A: 28.88e-4,
+    I: 541.1e-8,
+    path: "images/crossT.PNG",
+  },
+  {
+    ISMC: 100,
+    h: "100 mm",
+    b: "50mm",
+    t1: "4.7mm",
+    t2: "7.5 mm",
+    Ixx: "186.7 cm<sup>4</sup>",
+    Iyy: "25.9 cm<sup>4</sup>",
+    Area: "11.7 cm<sup>2</sup>",
+    A: 11.7e-4,
+    I: 186.7e-8,
+    path: "images/crossC.PNG",
+  },
+  {
+    ISA: 100100,
+    h: "100 mm",
+    b: "100mm",
+    t: "12mm",
+    Ixx: "207 cm<sup>4</sup>",
+    Iyy: "207 cm<sup>4</sup>",
+    Area: "22.59 cm<sup>2</sup>",
+    A: 22.59e-4,
+    I: 207e-8,
+    path: "images/crossL.PNG",
+  },
+  {
+    SQUARE: "",
+    h: "150 mm",
+    b: "150mm",
+    Ixx: "4218.75 cm<sup>4</sup>",
+    Iyy: "4218.75 cm<sup>4</sup>",
+    Area: "225 cm<sup>2</sup>",
+    A: 225e-4,
+    I: 4218.75e-8,
+    path: "images/crossSqr.PNG",
+  },
+  {
+    CIRCLE: "",
+    D: "150 mm",
+    Ixx: "2485.05  cm<sup>4</sup>",
+    Iyy: "2485.05  cm<sup>4</sup>",
+    Area: "176.72 cm<sup>2</sup>",
+    A: 176.72e-4,
+    I: 2485.05e-8,
+    path: "images/crossCirc.PNG",
+  },
+  {
+    A: 0.01,
+    I: 0.01,
+  },
+];
+
+// material Info
+const matInfo = [
+  {
+    E: 200e9,
+    rho: 7750,
+  },
+  {
+    E: 70.33e9,
+    rho: 2712,
+  },
+  {
+    E: 111.006e9,
+    rho: 8304,
+  },
+];
+
+// simulation variables
+let time = 0; //keeps track of the time of the animation
+let beamlength = 1500; //Length of the beam inmm
+let simTimeId; //for animation function
+let pauseTime; //for running animation when simulation is paused
+let rho = 7750; //Density in kg/m^3
+let A = 14.6e-4; //Area in m^2
+let massbeam = (rho * A * beamlength) / 1000; //Mass of the beam=volume * density
 var E = 200e9; //Young's Modulus
-var I = 4.08e-7; //Ixx value
-var dampingratio = 0;
-var endmass = 5;
+var I = 257.5e-8; //Ixx value
+let dampingratio = 0;
+let endmass = 5;
 var m = 0.4857 * massbeam + endmass;
 var k = (48 * E * I) / Math.pow(beamlength / 1000, 3); //Stiffness value for a cantilever beam
-var wn = Math.sqrt(k / m); //Natural Frequency
-var wd = wn * Math.sqrt(1 - dampingratio * dampingratio); //Damped natural frequency
-var initdisp = 500; //Initial displacement given to the beam
-var simstatus;
-var kdisp;
-var wndisp;
-var wddisp;
-function actdisplace(t) {
+// console.log(k);
+
+let wn = Math.sqrt(k / m); //Natural Frequency
+// console.log(wn);
+let wd = wn * Math.sqrt(1 - dampingratio * dampingratio); //Damped natural frequency
+let initdisp = 500; //Initial displacement given to the beam
+let simstatus;
+
+// canvas variables
+// graphics
+const canvas = document.querySelector("#canvas");
+const ctx = canvas.getContext("2d");
+
+// graph1
+const graphCanvas1 = document.querySelector("#graphscreen1");
+const graphctx1 = graphCanvas1.getContext("2d");
+
+//  graph2
+const graphCanvas2 = document.querySelector("#graphscreen2");
+const graphctx2 = graphCanvas2.getContext("2d");
+
+// fix scaling of canavs as per media
+let mediaQuery1 = window.matchMedia("screen and (max-width: 540px)");
+let mediaQuery2 = window.matchMedia("screen and (max-width: 704px)");
+let mediaQuery3 = window.matchMedia("screen and (max-width: 820px)");
+let mediaQuery4 = window.matchMedia("screen and (max-width: 1025px)");
+let mediaQuery5 = window.matchMedia("screen and (max-width: 1250px)");
+let mediaQuery6 = window.matchMedia("screen and (max-width: 1440px)");
+let scaleX = 0.5;
+let scaleY = 0.5;
+
+// dom elements
+const sectionImg = document.querySelector(".cross-img img");
+const sectionTooltip = document.querySelector(".sec-tooltip");
+const cirTooltip = document.querySelector(".cir-tooltip");
+const materials = document.querySelector("#materials");
+const sections = document.querySelector("#sections");
+const otherSec = document.querySelector(".other-sec");
+
+//Function to calculate the displacement
+const actdisplace = function (t) {
   let value =
-    Math.exp(-dampingratio * wndisp * t) *
-    (initdisp * Math.cos(wddisp * t) +
-      (dampingratio * wndisp * initdisp * Math.sin(wddisp * t)) / wddisp);
+    Math.exp(-dampingratio * wn * t) *
+    (initdisp * Math.cos(wd * t) +
+      (dampingratio * wn * initdisp * Math.sin(wd * t)) / wd);
   return value;
-} //Function to calculate the displacement
-var beaminf = [
-  "ISMB 100\n h=100 mm,b=75 mm\n t1=4 mm,t2=7 mm\nIxx=257.5 cm^4\nIyy=40.8 cm^4\nA=14.6 cm^2",
-  "ISNT 150\n h=150 mm,b=150 mm\n t1=10 mm,t2=10 mm\nIxx=541.1 cm^4\nIyy=250.3 cm^4\nA=28.88 cm^2",
-  "ISMC 100\n h=100 mm,b=50 mm\n t1=4.7 mm,t2=7.5 mm\nIxx=186.7 cm^4\nIyy=25.9 cm^4\nA=11.7 cm^2",
-  "ISA 100100\n h=100 mm,b=100 mm\n t=12 mm\nIxx=207 cm^4\nIyy=207 cm^4\nA=22.59 cm^2",
-  "SQUARE\n h=150 mm,b=150 mm\n Ixx=4218.75 cm^4\nIyy=4218.75 cm^4\nA=225 cm^2",
-  "CIRCLE\n D=150 mm\n Ixx=2485.05 cm^4\nIyy=2485.05 cm^4\nA=176.72 cm^2",
-]; //Standard beam dimensions
+};
+
 //start of simulation here; starts the timer with increments of 0.01 seconds
 function startsim() {
-  pauseTime = setInterval("varupdate();", "100");
-  simstatus = 1;
+  simTimeId = setInterval("varupdate();time+=.01;", 10);
+  // simstatus = 1;
 }
-
 // switches state of simulation between 0:Playing & 1:Paused
 function simstate() {
   let imgfilename = document.getElementById("playpausebutton").src;
@@ -48,257 +170,198 @@ function simstate() {
   );
   if (imgfilename === "bluepausedull") {
     document.getElementById("playpausebutton").src =
-      "./images/blueplaydull.png";
+      "./images/blueplaydull.svg";
 
-    cancelAnimationFrame(simTimeId);
+    clearInterval(simTimeId);
     simstatus = 1;
     pauseTime = setInterval("varupdate();", "100");
-    clearInterval(simTimeId);
+    document.querySelector(".playPause").textContent = "Play";
   }
   if (imgfilename === "blueplaydull") {
-    clearInterval(pauseTime);
-
-    time = 0;
     document.getElementById("playpausebutton").src =
-      "./images/bluepausedull.png";
-
-    simTimeId = setInterval("varupdate();time+=.01;", 10);
+      "./images/bluepausedull.svg";
     simstatus = 0;
+    clearInterval(pauseTime);
+    time = 0;
+    simTimeId = setInterval("varupdate();time+=.01;", 10);
+    document.querySelector(".playPause").textContent = "Pause";
   }
 }
+
 //Initialise system parameters here
 function varinit() {
-  let canvas = document.getElementById("graphscreen");
-  canvas.style.visibility = "hidden";
   varchange();
   //Variable slider and number input types
-  $("#massslider").slider("value", 25); // slider initialisation : jQuery widget
-  $("#massspinner").spinner("value", 25); // number initialisation : jQuery widget
-  $("#lengthslider").slider("value", 1000);
-  $("#lengthspinner").spinner("value", 1000);
-  $("#dampslider").slider("value", 0.05);
-  $("#dampspinner").spinner("value", 0.05);
+  $("#massSlider").slider("value", 25); // slider initialisation : jQuery widget
+  $("#massSpinner").spinner("value", 25); // number initialisation : jQuery widget
+  $("#lengthSlider").slider("value", 1000);
+  $("#lengthSpinner").spinner("value", 1000);
+  $("#dampSlider").slider("value", 0.05);
+  $("#dampSpinner").spinner("value", 0.05);
   $("#CsArea").spinner("value", 0.01);
   $("#Ivalue").spinner("value", 0.01);
 }
 function varchange() {
+  $("#massSlider").slider({ max: 200, min: 0, step: 0.5 });
+  $("#massSpinner").spinner({ max: 200, min: 0, step: 0.5 });
+
+  $("#massSlider").on("slide", function (e, ui) {
+    $("#massSpinner").spinner("value", ui.value);
+    time = 0;
+    varupdate();
+  });
+  $("#massSpinner").on("spin", function (e, ui) {
+    $("#massSlider").slider("value", ui.value);
+    time = 0;
+    varupdate();
+  });
+  $("#massSpinner").on("change", function () {
+    varchange();
+  });
+
+  $("#lengthSlider").slider({ max: 2000, min: 200, step: 10 });
+  $("#lengthSpinner").spinner({ max: 2000, min: 200, step: 10 });
+
+  $("#lengthSlider").on("slide", function (e, ui) {
+    $("#lengthSpinner").spinner("value", ui.value);
+    time = 0;
+    varupdate();
+  });
+  $("#lengthSpinner").on("spin", function (e, ui) {
+    $("#lengthSlider").slider("value", ui.value);
+    time = 0;
+    varupdate();
+  });
+  $("#lengthSpinner").on("change", function () {
+    varchange();
+  });
+  $("#lengthSpinner").on("touch-start", function () {
+    varchange();
+  });
+
+  $("#dampSlider").slider({ max: 0.99, min: 0, step: 0.01 });
+  $("#dampSpinner").spinner({ max: 0.99, min: 0, step: 0.01 });
+
+  $("#dampSlider").on("slide", function (e, ui) {
+    $("#dampSpinner").spinner("value", ui.value);
+    time = 0;
+    varupdate();
+  });
+  $("#dampSpinner").on("spin", function (e, ui) {
+    $("#dampSlider").slider("value", ui.value);
+    time = 0;
+    varupdate();
+  });
+  $("#dampSpinner").on("change", function () {
+    varchange();
+  });
   $("#CsArea").spinner({ max: 1, min: 0.01, step: 0.0001 });
   $("#Ivalue").spinner({ max: 1, min: 0.01, step: 0.0001 });
-  $("#massslider").slider({ max: 200, min: 0, step: 0.5 });
-  $("#massspinner").spinner({ max: 200, min: 0, step: 0.5 });
-
-  $("#massslider").on("slide", function (e, ui) {
-    $("#massspinner").spinner("value", ui.value);
-    time = 0;
-  });
-  $("#massspinner").on("spin", function (e, ui) {
-    $("#massslider").slider("value", ui.value);
-    time = 0;
-  });
-  $("#massspinner").on("change", function () {
-    varchange();
-  });
-
-  $("#lengthslider").slider({ max: 2000, min: 200, step: 10 });
-  $("#lengthspinner").spinner({ max: 2000, min: 200, step: 10 });
-
-  $("#lengthslider").on("slide", function (e, ui) {
-    $("#lengthspinner").spinner("value", ui.value);
-    time = 0;
-  });
-  $("#lengthspinner").on("spin", function (e, ui) {
-    $("#lengthslider").slider("value", ui.value);
-    time = 0;
-  });
-  $("#lengthspinner").on("change", function () {
-    varchange();
-  });
-
-  $("#dampslider").slider({ max: 0.99, min: 0, step: 0.01 });
-  $("#dampspinner").spinner({ max: 0.99, min: 0, step: 0.01 });
-
-  $("#dampslider").on("slide", function (e, ui) {
-    $("#dampspinner").spinner("value", ui.value);
-    time = 0;
-  });
-  $("#dampspinner").on("spin", function (e, ui) {
-    $("#dampslider").slider("value", ui.value);
-    time = 0;
-  });
-  $("#dampspinner").on("change", function () {
-    varchange();
-  });
-
-  varupdate();
 }
 function varupdate() {
-  $("#massslider").slider("value", $("#massspinner").spinner("value")); //updating slider location with change in spinner(debug)
-  $("#lengthslider").slider("value", $("#lengthspinner").spinner("value"));
-  $("#dampslider").slider("value", $("#dampspinner").spinner("value"));
-  let crossec = document.getElementById("sections").options.selectedIndex; //Using drop down menu as input
-  switch (crossec) {
-    case 0:
-      document.getElementById("crosssec").src = "./images/crossI.PNG";
-      document.getElementById("crosssec").title = beaminf[0];
-      document.getElementById("text1").innerHTML = "";
-      document.getElementById("text2").innerHTML = "";
-      A = 14.6e-4;
-      I = 257.5e-8;
-      $("#CsArea").spinner("disable");
-      $("#Ivalue").spinner("disable");
-      break;
-    case 1:
-      document.getElementById("crosssec").src = "./images/crossT.PNG";
-      document.getElementById("crosssec").title = beaminf[1];
-      document.getElementById("text1").innerHTML = "";
-      document.getElementById("text2").innerHTML = "";
-      A = 28.88e-4;
-      I = 541.1e-8;
-      $("#CsArea").spinner("disable");
-      $("#Ivalue").spinner("disable");
-      break;
-    case 2:
-      document.getElementById("crosssec").src = "./images/crossC.PNG";
-      document.getElementById("crosssec").title = beaminf[2];
-      document.getElementById("text1").innerHTML = "";
-      document.getElementById("text2").innerHTML = "";
-      A = 11.7e-4;
-      I = 186.7e-8;
-      $("#CsArea").spinner("disable");
-      $("#Ivalue").spinner("disable");
-      break;
-    case 3:
-      document.getElementById("crosssec").src = "./images/crossL.PNG";
-      document.getElementById("crosssec").title = beaminf[3];
-      document.getElementById("text1").innerHTML = "";
-      document.getElementById("text2").innerHTML = "";
-      A = 22.59e-4;
-      I = 207e-8;
-      $("#CsArea").spinner("disable");
-      $("#Ivalue").spinner("disable");
-      break;
-    case 4:
-      document.getElementById("crosssec").src = "./images/crossSqr.PNG";
-      document.getElementById("crosssec").title = beaminf[4];
-      document.getElementById("text1").innerHTML = "";
-      document.getElementById("text2").innerHTML = "";
-      A = 225e-4;
-      I = 4218.75e-8;
-      $("#CsArea").spinner("disable");
-      $("#Ivalue").spinner("disable");
-      break;
-    case 5:
-      document.getElementById("crosssec").src = "./images/crossCirc.PNG";
-      document.getElementById("crosssec").title = beaminf[5];
-      document.getElementById("text1").innerHTML = "";
-      document.getElementById("text2").innerHTML = "";
-      A = 176.72e-4;
-      I = 2485.05e-8;
-      $("#CsArea").spinner("disable");
-      $("#Ivalue").spinner("disable");
-      break;
-    case 6:
-      document.getElementById("crosssec").src = "./images/crossOth.png";
-      document.getElementById("crosssec").title = "";
-      $("#CsArea").spinner("enable");
-      $("#Ivalue").spinner("enable");
-      A = 0.01;
-      I = 0.01;
-      $("#CsArea").spinner({
-        spin: function (event, ui) {
-          document.getElementById("text1").innerHTML =
-            "Area = " + ui.value + "m^2";
-          A = ui.value;
-        },
-      });
-      $("#Ivalue").spinner({
-        spin: function (event, ui) {
-          document.getElementById("text2").innerHTML =
-            "I = " + ui.value + "m^4";
-          I = ui.value;
-        },
-      });
-      break;
-  }
-  let matt = document.getElementById("metals").options.selectedIndex;
-  switch (matt) {
-    case 0:
-      E = 200e9;
-      rho = 7750;
-      break;
-    case 1:
-      E = 70.33e9;
-      rho = 2712;
-      break;
-    case 2:
-      E = 111.006e9;
-      rho = 8304;
-      break;
-  }
-  endmass = $("#massspinner").spinner("value"); //Updating variables
-  beamlength = $("#lengthspinner").spinner("value");
-  dampingratio = $("#dampspinner").spinner("value");
+  $("#massSpinner").spinner("value", $("#massSlider").slider("value")); //updating slider location with change in spinner(debug)
+  $("#lengthSpinner").spinner("value", $("#lengthSlider").slider("value"));
+  $("#dampSpinner").spinner("value", $("#dampSlider").slider("value"));
+  endmass = $("#massSpinner").spinner("value"); //Updating variables
+  beamlength = $("#lengthSpinner").spinner("value");
+  dampingratio = $("#dampSpinner").spinner("value");
+
   massbeam = (rho * A * beamlength) / 1000;
   m = 0.4857 * massbeam + endmass;
   k = (48 * E * I) / Math.pow(beamlength / 1000, 3);
-  kdisp = k / 2000;
+  // console.log(massbeam);
+
   wn = Math.sqrt(k / m);
-  wndisp = Math.sqrt(kdisp / m);
   let cc = 2 * Math.sqrt(k * m);
   let c = dampingratio * cc;
   wd = wn * Math.sqrt(1 - dampingratio * dampingratio);
-  wddisp = wndisp * Math.sqrt(1 - dampingratio * dampingratio);
-  document.getElementById("mass").innerHTML = m.toFixed(4) + "kg"; //Displaying values
-  document.getElementById("k").innerHTML = (k / 1000).toFixed(4) + "N/mm";
-  document.getElementById("c").innerHTML = c.toFixed(4) + "Ns/m";
-  document.getElementById("wd").innerHTML = wd.toFixed(4) + "rad/s";
-  document.getElementById("wn").innerHTML = wn.toFixed(4) + "rad/s";
-  document.getElementById("massSystem").title =
-    "M =" +
-    m.toFixed(4) +
-    " kg" +
-    "\n" +
-    "c = " +
-    c.toFixed(4) +
-    " Ns/m" +
-    "\n" +
-    "k =" +
-    (k / 1000).toFixed(4) +
-    " N/mm";
+  document.querySelector("#mass").innerHTML = m.toFixed(4) + "kg"; //Displaying values
+  document.querySelector("#k").innerHTML = (k / 1000).toFixed(4) + "N/mm";
+  document.querySelector("#c").innerHTML = c.toFixed(4) + "Ns/m";
+  document.querySelector("#wd").innerHTML = wd.toFixed(4) + "rad/s";
+  document.querySelector("#wn").innerHTML = wn.toFixed(4) + "rad/s";
+
+  cirTooltip.innerHTML = `M = ${m.toFixed(4)} \n kg <br>  c = ${c.toFixed(
+    4
+  )}Ns/m \n<br> k = ${(k / 1000).toFixed(4)}N/mm
+  `;
   //If simulation is running
   if (!simstatus) {
     //Disabling the slider,spinner and drop down menu
-    $("#massspinner").spinner("disable");
-    $("#massslider").slider("disable");
-    $("#lengthspinner").spinner("disable");
-    $("#lengthslider").slider("disable");
-    $("#dampspinner").spinner("disable");
-    $("#dampslider").slider("disable");
+    $("#massSpinner").spinner("disable");
+    $("#massSlider").slider("disable");
+    $("#lengthSpinner").spinner("disable");
+    $("#lengthSlider").slider("disable");
+    $("#dampSpinner").spinner("disable");
+    $("#dampSlider").slider("disable");
+    $("#CsArea").spinner("enable");
+    $("#Ivalue").spinner("enable");
     document.getElementById("sections").disabled = true;
-    document.getElementById("metals").disabled = true;
+    document.getElementById("materials").disabled = true;
   }
   //If simulation is stopped
   if (simstatus) {
     //Enabling the slider,spinner and drop down menu
-    $("#massspinner").spinner("enable");
-    $("#massslider").slider("enable");
-    $("#lengthspinner").spinner("enable");
-    $("#lengthslider").slider("enable");
-    $("#dampspinner").spinner("enable");
-    $("#dampslider").slider("enable");
+    $("#massSpinner").spinner("enable");
+    $("#massSlider").slider("enable");
+    $("#lengthSpinner").spinner("enable");
+    $("#lengthSlider").slider("enable");
+    $("#dampSpinner").spinner("enable");
+    $("#dampSlider").slider("enable");
+    $("#CsArea").spinner("enable");
+    $("#Ivalue").spinner("enable");
     document.getElementById("sections").disabled = false;
-    document.getElementById("metals").disabled = false;
+    document.getElementById("materials").disabled = false;
   }
   draw();
-  plotgraph();
 }
-//Simulation graphics
-function draw() {
-  let canvas = document.getElementById("simscreen");
-  let ctx = canvas.getContext("2d");
+
+const setMediaQueries = function (ctx) {
+  let originalX = 20;
+  if (mediaQuery1.matches) {
+    scaleX = 1.8;
+    // originalX = 20;
+    originalX = canvas.width / 4 - 10;
+    scaleY = 0.9;
+  } else if (mediaQuery2.matches) {
+    scaleX = 1.2;
+    // originalX = canvas.width / 4 - 10;
+    scaleY = 0.9;
+  } else if (mediaQuery3.matches) {
+    scaleX = 1.3;
+    originalX = canvas.width / 4 - 10;
+    scaleY = 0.9;
+  } else if (mediaQuery4.matches) {
+    scaleX = 0.8;
+    originalX = canvas.width / 4 - 10;
+    scaleY = 0.7;
+  }  else if (mediaQuery5.matches) {
+    scaleX = 0.6;
+    originalX = canvas.width / 4 - 10;
+    scaleY = 0.7;
+  }else if (mediaQuery6.matches) {
+    scaleX = 0.425;
+    originalX = canvas.width / 4 - 10;
+    scaleY = 0.7;
+  } else {
+    // originalX = canvas.width / 4 - 20;
+    scaleX = 0.3;
+    scaleY = 0.5;
+  }
+  ctx.canvas.width = document.documentElement.clientWidth * scaleX;
+  ctx.canvas.height = document.documentElement.clientHeight * scaleY;
+  return originalX;
+};
+
+const draw = function () {
+  let canvas = document.getElementById("canvas");
+  let originalX = setMediaQueries(ctx);
+  ctx.canvas.width = document.documentElement.clientWidth * scaleX;
+  ctx.canvas.height = document.documentElement.clientHeight * scaleY;
+
   var ball = {
     xpos: beamlength / 5 / 2 + 50 + 25,
-    ypos: 210 + actdisplace(time) / 10,
+    ypos: 210 + actdisplace(time * 0.03) / 10,
     size: endmass === 0 ? 0 : 15 + endmass / 5,
     draw: function () {
       ctx.beginPath();
@@ -375,97 +438,162 @@ function draw() {
   beamdef(ball.ypos - 210);
 
   ball.draw();
-}
-//Graph plotting function
-function plotgraph() {
-  let canvas = document.getElementById("graphscreen");
-  let ctx = canvas.getContext("2d");
+  ball.draw();
+  generateGraph();
+};
 
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.font = "15px Arial";
-  ctx.save();
-  ctx.translate(0, 225);
-  ctx.rotate(-Math.PI / 2);
-  ctx.fillText("Displacement", 0, 15);
-  ctx.restore();
-  ctx.fillText("Time", 150, 350);
-  ctx.beginPath();
+function generateGraph() {
+  // Graph 1
+  let graph1X = setMediaQueries(graphctx1);
+  graphctx1.canvas.width = document.documentElement.clientWidth * scaleX;
+  graphctx1.canvas.height = document.documentElement.clientHeight * scaleY;
+  graphctx1.clearRect(0, 0, graphCanvas1.width, graphCanvas1.height);
+  graphctx1.font = "2rem Nunito sans MS";
+  graphctx1.save();
+  graphctx1.translate(0, 225);
+  graphctx1.rotate(-Math.PI / 2);
+  graphctx1.fillText("Displacement", 0, 15);
+  graphctx1.restore();
+  graphctx1.fillText("Time", 150, 350);
+  graphctx1.beginPath();
 
-  ctx.moveTo(20, 100);
-  ctx.lineTo(20, 350);
-  ctx.moveTo(20, 225);
-  ctx.lineTo(320, 225);
-  ctx.strokeStyle = "black";
-  ctx.stroke();
-  ctx.closePath();
+  graphctx1.moveTo(20, 100);
+  graphctx1.lineTo(20, 350);
+  graphctx1.moveTo(20, 225);
+  graphctx1.lineTo(graphCanvas1.width, 225);
+  graphctx1.strokeStyle = "black";
+  graphctx1.stroke();
+  graphctx1.closePath();
 
-  ctx.beginPath();
-
-  ctx.moveTo(20, 225);
-  var i = 0;
-  ctx.strokeStyle = "green";
-  ctx.lineWidth = 1;
-  while (i < 300) {
-    ctx.lineTo(i + 20, 225 - (0.9 * actdisplace(0.003 * i * 2)) / 5);
-    ctx.moveTo(i + 20, 225 - (0.9 * actdisplace(0.003 * i * 2)) / 5);
+  graphctx1.beginPath();
+  graphctx1.moveTo(20, 225);
+  let i = 0;
+  graphctx1.strokeStyle = "green";
+  graphctx1.lineWidth = 1;
+  while (i < graphCanvas1.width) {
+    graphctx1.lineTo(i + 20, 225 - (0.9 * actdisplace(0.00007 * i)) / 5);
+    graphctx1.moveTo(i + 20, 225 - (0.9 * actdisplace(0.00007 * i)) / 5);
     i += 0.01;
   }
-  ctx.stroke();
-  ctx.beginPath();
-  ctx.strokeStyle = "black";
-  ctx.moveTo(350, 345);
-  ctx.lineTo(350, 135);
-  ctx.moveTo(350, 345);
-  ctx.lineTo(550, 345);
-  ctx.stroke();
-  ctx.save();
-  ctx.translate(340, 345);
-  ctx.rotate(-Math.PI / 2);
-  ctx.fillText("Amplitude", 30, 0);
-  ctx.restore();
-  ctx.font = "10px Arial";
-  ctx.fillText("Frequency(rad/s)", 470, 355);
-  ctx.strokeStyle = "#800080";
-  ctx.lineWidth = 1;
-  ctx.moveTo(350, 345);
+  graphctx1.stroke();
+
+  // Graph 2
+  let graph2X = setMediaQueries(graphctx2);
+  graphctx2.canvas.width = document.documentElement.clientWidth * scaleX;
+  graphctx2.canvas.height = document.documentElement.clientHeight * scaleY;
+  graphctx2.clearRect(0, 0, graphCanvas2.width, graphCanvas2.height);
+  graphctx2.font = "2rem Nunito sans MS";
+  graphctx2.beginPath();
+  graphctx2.strokeStyle = "black";
+  graphctx2.moveTo(20, 330);
+  graphctx2.lineTo(20, 135);
+  graphctx2.moveTo(20, 330);
+  graphctx2.lineTo(520, 330);
+  graphctx2.stroke();
+  graphctx2.save();
+  graphctx2.translate(10, 345);
+  graphctx2.rotate(-Math.PI / 2);
+  graphctx2.fillText("Amplitude", 45, 5);
+  graphctx2.restore();
+  graphctx2.fillText("Frequency(rad/s)", 170, 350);
+  graphctx2.strokeStyle = "#800080";
+  graphctx2.lineWidth = 1;
+  graphctx2.moveTo(350, 345);
   function amplitude(n) {
     return 20 / Math.sqrt(Math.pow(1 - n * n, 2) + Math.pow(2 * 0.05 * n, 2));
   }
   let j = 0;
-  ctx.beginPath();
+  graphctx2.beginPath();
   while (j < 300) {
-    ctx.lineTo(j + 370, 325 - 0.9 * amplitude(0.01 * j));
-    ctx.moveTo(j + 370, 325 - 0.9 * amplitude(0.01 * j));
+    graphctx2.lineTo(j + 50, 325 - 0.9 * amplitude(0.01 * j));
+    graphctx2.moveTo(j + 50, 325 - 0.9 * amplitude(0.01 * j));
     j += 0.01;
   }
-  ctx.stroke();
-  ctx.beginPath();
-  ctx.strokeStyle = "green";
-  ctx.moveTo(470, 360);
-  ctx.lineTo(470, 100);
-  ctx.stroke();
-  ctx.font = "12px Arial";
-  ctx.fillText("\u03C9d=" + wd.toFixed(3) + "rad/s", 430, 370);
+  graphctx2.stroke();
+  graphctx2.beginPath();
+  graphctx2.strokeStyle = "green";
+  graphctx2.moveTo(150, 360);
+  graphctx2.lineTo(150, 100);
+  graphctx2.stroke();
+  graphctx2.font = "2rem Nunito sans MS";
+  graphctx2.fillText("\u03C9d= " + wd.toFixed(3) + "rad/s", 260, 300);
 }
-//Switches between graph screen and simulation screen
-function changescreen() {
-  let canvas1 = document.getElementById("simscreen");
-  let ctx1 = canvas1.getContext("2d");
-  let canvas2 = document.getElementById("graphscreen");
-  let ctx2 = canvas2.getContext("2d");
-  let imgfilename = document.getElementById("graphbutton").src;
-  imgfilename = imgfilename.substring(
-    imgfilename.lastIndexOf("/") + 1,
-    imgfilename.lastIndexOf(".")
-  );
-  if (imgfilename === "graphbutton") {
-    document.getElementById("graphbutton").src = "./images/bluebkdulls.png";
-    canvas1.style.visibility = "hidden";
-    canvas2.style.visibility = "visible";
-  }
-  if (imgfilename === "bluebkdulls") {
-    document.getElementById("graphbutton").src = "./images/graphbutton.png";
-    canvas1.style.visibility = "visible";
-    canvas2.style.visibility = "hidden";
-  }
+
+function plotgraph() {
+  const graphDiv = document.querySelectorAll(".graph-div");
+  console.log(graphDiv);
+  graphDiv.forEach((graph) => {
+    graph.classList.toggle("display-hide");
+  });
+  generateGraph();
+  graphDiv[0].scrollIntoView({
+    behavior: "smooth",
+  });
 }
+
+window.addEventListener("load", varinit);
+
+const selectSection = function () {
+  otherSec.classList.remove("display-flex");
+  otherSec.classList.add("display-hide");
+  let value = sections.value;
+  if (value != 6) {
+    sectionImg.src = beamInfo[value].path;
+    const infos = Object.entries(beamInfo[value]);
+    sectionTooltip.innerHTML = "";
+    for (const [key, value] of infos.slice(0, -3)) {
+      const text = `${key}:${value}, `;
+      sectionTooltip.insertAdjacentHTML("beforeend", text);
+    }
+    for (const [key, value] of infos) {
+      if (key == "A") {
+        A = value;
+      }
+      if (key == "I") {
+        I = value;
+      }
+    }
+    varupdate();
+  } else {
+    otherSec.classList.add("display-flex");
+    otherSec.classList.remove("display-hide");
+    sectionImg.src = "images/crossOth.PNG";
+    A = 0.01;
+    I = 0.01;
+    sectionTooltip.innerHTML = "";
+    sectionTooltip.innerHTML = `Area = ${A} m<sup>2</sup>, I = ${I} m<sup>4</sup>`;
+    $("#CsArea").spinner({
+      spin: function (event, ui) {
+        A = ui.value;
+        I = $("#Ivalue").spinner("value");
+        sectionTooltip.innerHTML = `Area = ${A} m<sup>2</sup>, I = ${I} m<sup>4</sup>`;
+      },
+    });
+    $("#Ivalue").spinner({
+      spin: function (event, ui) {
+        I = ui.value;
+        A = $("#CsArea").spinner("value");
+        sectionTooltip.innerHTML = `Area = ${A} m<sup>2</sup>, I = ${I} m<sup>4</sup>`;
+      },
+    });
+  }
+};
+
+sections.addEventListener("change", selectSection);
+const selectMaterial = function () {
+  let value = materials.value;
+  const infos = Object.entries(matInfo[value]);
+  cirTooltip.innerHTML = "";
+  for (const [key, value] of infos) {
+    const text = `${key}:${value}, `;
+    if (key == "E") {
+      E = +value;
+    }
+    if (key == "rho") {
+      rho = +value;
+    }
+    cirTooltip.insertAdjacentHTML("beforeend", text);
+  }
+  varupdate();
+};
+materials.addEventListener("change", selectMaterial);
