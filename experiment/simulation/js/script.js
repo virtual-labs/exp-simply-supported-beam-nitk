@@ -448,17 +448,17 @@ function generateGraph() {
   graphctx1.canvas.width = document.documentElement.clientWidth * scaleX;
   graphctx1.canvas.height = document.documentElement.clientHeight * scaleY;
   graphctx1.clearRect(0, 0, graphCanvas1.width, graphCanvas1.height);
-  graphctx1.font = "2rem Nunito sans MS";
+  graphctx1.font = "bold 2.2rem Nunito sans MS";
   graphctx1.save();
   graphctx1.translate(0, 225);
   graphctx1.rotate(-Math.PI / 2);
-  graphctx1.fillText("Displacement", 0, 15);
+  graphctx1.fillText("Displacement", -20, 15);
   graphctx1.restore();
   graphctx1.fillText("Time", 150, 350);
   graphctx1.beginPath();
 
-  graphctx1.moveTo(20, 100);
-  graphctx1.lineTo(20, 350);
+  graphctx1.moveTo(20, 50);
+  graphctx1.lineTo(20, 370);
   graphctx1.moveTo(20, 225);
   graphctx1.lineTo(graphCanvas1.width, 225);
   graphctx1.strokeStyle = "black";
@@ -482,18 +482,18 @@ function generateGraph() {
   graphctx2.canvas.width = document.documentElement.clientWidth * scaleX;
   graphctx2.canvas.height = document.documentElement.clientHeight * scaleY;
   graphctx2.clearRect(0, 0, graphCanvas2.width, graphCanvas2.height);
-  graphctx2.font = "2rem Nunito sans MS";
+  graphctx2.font = "bold 2.2rem Nunito sans MS";
   graphctx2.beginPath();
   graphctx2.strokeStyle = "black";
   graphctx2.moveTo(20, 330);
-  graphctx2.lineTo(20, 135);
+  graphctx2.lineTo(20, 35);
   graphctx2.moveTo(20, 330);
   graphctx2.lineTo(520, 330);
   graphctx2.stroke();
   graphctx2.save();
   graphctx2.translate(10, 345);
   graphctx2.rotate(-Math.PI / 2);
-  graphctx2.fillText("Amplitude", 45, 5);
+  graphctx2.fillText("Amplitude", 125, 5);
   graphctx2.restore();
   graphctx2.fillText("Frequency(rad/s)", 170, 350);
   graphctx2.strokeStyle = "#800080";
@@ -515,7 +515,7 @@ function generateGraph() {
   graphctx2.moveTo(150, 360);
   graphctx2.lineTo(150, 100);
   graphctx2.stroke();
-  graphctx2.font = "2rem Nunito sans MS";
+  graphctx2.font = "bold 2.2rem Nunito sans MS";
   graphctx2.fillText("\u03C9d= " + wd.toFixed(3) + "rad/s", 260, 300);
 }
 
@@ -557,7 +557,7 @@ const selectSection = function () {
   } else {
     otherSec.classList.add("display-flex");
     otherSec.classList.remove("display-hide");
-    sectionImg.src = "images/crossOth.PNG";
+    sectionImg.src = "images/crossOth.png";
     A = 0.01;
     I = 0.01;
     sectionTooltip.innerHTML = "";
