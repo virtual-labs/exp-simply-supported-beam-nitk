@@ -336,17 +336,17 @@ const setMediaQueries = function (ctx) {
     originalX = canvas.width / 4 - 10;
     scaleY = 0.7;
   }  else if (mediaQuery5.matches) {
-    scaleX = 0.6;
+    scaleX = 0.9;
     originalX = canvas.width / 4 - 10;
     scaleY = 0.7;
   }else if (mediaQuery6.matches) {
-    scaleX = 0.425;
+    scaleX = 0.5;
     originalX = canvas.width / 4 - 10;
-    scaleY = 0.7;
+    scaleY = 0.8;
   } else {
     // originalX = canvas.width / 4 - 20;
-    scaleX = 0.3;
-    scaleY = 0.5;
+    scaleX = 0.5;
+    scaleY = 0.7;
   }
   ctx.canvas.width = document.documentElement.clientWidth * scaleX;
   ctx.canvas.height = document.documentElement.clientHeight * scaleY;
@@ -448,7 +448,7 @@ function generateGraph() {
   graphctx1.canvas.width = document.documentElement.clientWidth * scaleX;
   graphctx1.canvas.height = document.documentElement.clientHeight * scaleY;
   graphctx1.clearRect(0, 0, graphCanvas1.width, graphCanvas1.height);
-  graphctx1.font = "2rem Comic sans MS";
+  graphctx1.font = "2.1rem Comic sans MS";
   graphctx1.save();
   graphctx1.translate(0, 225);
   graphctx1.rotate(-Math.PI / 2);
@@ -482,7 +482,7 @@ function generateGraph() {
   graphctx2.canvas.width = document.documentElement.clientWidth * scaleX;
   graphctx2.canvas.height = document.documentElement.clientHeight * scaleY;
   graphctx2.clearRect(0, 0, graphCanvas2.width, graphCanvas2.height);
-  graphctx2.font = "2rem Comic sans MS";
+  graphctx2.font = "2.1rem Comic sans MS";
   graphctx2.beginPath();
   graphctx2.strokeStyle = "black";
   graphctx2.moveTo(20, 330);
@@ -515,7 +515,7 @@ function generateGraph() {
   graphctx2.moveTo(150, 360);
   graphctx2.lineTo(150, 100);
   graphctx2.stroke();
-  graphctx2.font = "2rem Comic sans MS";
+  graphctx2.font = "2.1rem Comic sans MS";
   graphctx2.fillText("\u03C9d= " + wd.toFixed(3) + "rad/s", 260, 300);
 }
 
