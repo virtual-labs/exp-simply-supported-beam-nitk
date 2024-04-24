@@ -83,6 +83,10 @@ h1 {
   gap: 0.5rem;
 }
 
+.graph-div{
+  margin-bottom: 30px;
+}
+
 /* ********************** */
 /* *******SIDEBAR******* */
 /* ********************** */
@@ -359,6 +363,13 @@ h1 {
 #graphscreen2 {
   border-top: 1px solid var(--clr-title-background);
 }
+
+#graphscreen1,
+#graphscreen2 {
+  height: 300px;
+  width: 100%;
+}
+
 /* **********VARIABLES**************** */
 #variables {
   display: flex;

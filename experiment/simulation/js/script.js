@@ -448,13 +448,13 @@ function generateGraph() {
   graphctx1.canvas.width = document.documentElement.clientWidth * scaleX;
   graphctx1.canvas.height = document.documentElement.clientHeight * scaleY;
   graphctx1.clearRect(0, 0, graphCanvas1.width, graphCanvas1.height);
-  graphctx1.font = "bold 2.2rem Nunito sans MS";
+  graphctx1.font = "2rem Comic sans MS";
   graphctx1.save();
   graphctx1.translate(0, 225);
   graphctx1.rotate(-Math.PI / 2);
   graphctx1.fillText("Displacement", -20, 15);
   graphctx1.restore();
-  graphctx1.fillText("Time", 150, 350);
+  graphctx1.fillText("Time", 150, 343);
   graphctx1.beginPath();
 
   graphctx1.moveTo(20, 50);
@@ -482,7 +482,7 @@ function generateGraph() {
   graphctx2.canvas.width = document.documentElement.clientWidth * scaleX;
   graphctx2.canvas.height = document.documentElement.clientHeight * scaleY;
   graphctx2.clearRect(0, 0, graphCanvas2.width, graphCanvas2.height);
-  graphctx2.font = "bold 2.2rem Nunito sans MS";
+  graphctx2.font = "2rem Comic sans MS";
   graphctx2.beginPath();
   graphctx2.strokeStyle = "black";
   graphctx2.moveTo(20, 330);
@@ -495,7 +495,7 @@ function generateGraph() {
   graphctx2.rotate(-Math.PI / 2);
   graphctx2.fillText("Amplitude", 125, 5);
   graphctx2.restore();
-  graphctx2.fillText("Frequency(rad/s)", 170, 350);
+  graphctx2.fillText("Frequency(rad/s)", 170, 345);
   graphctx2.strokeStyle = "#800080";
   graphctx2.lineWidth = 1;
   graphctx2.moveTo(350, 345);
@@ -515,7 +515,7 @@ function generateGraph() {
   graphctx2.moveTo(150, 360);
   graphctx2.lineTo(150, 100);
   graphctx2.stroke();
-  graphctx2.font = "bold 2.2rem Nunito sans MS";
+  graphctx2.font = "2rem Comic sans MS";
   graphctx2.fillText("\u03C9d= " + wd.toFixed(3) + "rad/s", 260, 300);
 }
 
