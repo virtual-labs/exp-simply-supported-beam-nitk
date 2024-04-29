@@ -1,100 +1,222 @@
 <!DOCTYPE html>
 <html lang="en">
- <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="./css/MOMstyle.css" />
-    <script src='./js/jquery.min.js'></script>
-    <script src='./js/jquery-ui.min.js'></script>
-    <script src="./js/script.js"></script>
- </head>
- <body onload="startsim(); varinit();">
-  <title>Simply Supported Beam-Free Vibration</title>
-<!-- Defining Container for Simulation -->
-<div id="container">
-    <!-- Replace TITLE with simulation title to be displayed next to logo-->
-    <div id="simtitle">SINGLE DEGREE OF FREEDOM SYSTEM</div>
-    <!-- Region for simulation display -->
-    <canvas id="simscreen" height="400px" width="550px"></canvas>
-    <!-- Region for graph display -->
-    <canvas id="graphscreen" height="400px" width="550px"></canvas>
-    <!-- Cross section display -->
-    <div id="crosssection"><img id="crosssec" title="" src="./images/crossI.PNG"/><img id="massSystem" src="./images/massSystem.PNG" title=""/></div>
-    <div id="textonarea"><p style="font-size: 20px" id="text1"></p>
-        <p style="font-size: 20px" id="text2"></p>
-    </div>
-    <div id="titleincanvas">Simply Supported Beam-Free Vibration</div>
-    <!-- Region for result display -->
-    <div id="commentboxleft">
-        <p>For other section:</p>
-     <div id="othercrossec">
-         <p title="Area">C/s Area(m^2)<input id="CsArea"/></p>
-         <p>Ixx(m^4) <input id="Ivalue"/></p>
-     </div>
-    </div>
-    <div id="commentboxright">
-        <p id="p1">m=<span id="mass"></span></p>
-        <p id="p2">k=<span id="k"></span></p>
-        <p id="p3">c=<span id="c"></span></p>
-        <div id="omegavalues">
-	    <p>&#969;<sub>n</sub>=<span id="wn"></span></p>
-            <p>&#969;<sub>d</sub>=<span id="wd"></span></p>
-            
-        </div>
-    </div>
-    <!-- DND-Title of region for variables display -->
-    <div id="vartitle">VARIABLES</div>
-    <!-- Region for Input parameters of simulation -->
-    <div id="variables">
-        <div class="variable">
-            <div id="materialdrop">
-                <p>
-                    Materials:
-                    <select id="metals" title="STEEL &#10;&#961;=7750kg/m^3 E=200Gpa&#10;ALUMINIUM&#10;&#961;=2712kg/m^3 E=70.33Gpa&#10;BRONZE&#10;&#961;=8304kg/m^3 E=111.006Gpa">
-                        <option value="steel">Steel</option>
-                        <option value="aluminium">Aluminium</option>
-                        <option value="Bronze">Bronze</option>
-                    </select>
-                </p>
 
-            </div>
-            <div id="section">
-                <p>
-                    Sections:
-                    <select id="sections">
-                        <option>I section</option>
-                        <option>T section</option>
-                        <option>C section</option>
-                        <option>L section</option>
-                        <option>Square section</option>
-                        <option>Circular section</option>
-                        <option>Other section</option>
-                    </select>
-                </p>
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SOLVE-MDMV-Free vibration of simply supported beam</title>
+  <!-- <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet"> -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css" />
+  <link rel="stylesheet" href="css/general.css" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/query.css" />
+  <!-- <script defer src="https://code.jquery.com/jquery.min.js"></script> -->
+  <script defer src="https://code.jquery.com/jquery-3.7.0.min.js"
+    integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+  <script defer src="https://code.jquery.com/ui/1.8.17/jquery-ui.min.js"></script>
+  <script defer src="https://code.jquery.com/jquery-3.6.0.js"></script>
+  <script defer src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+  <script defer type="text/javascript"
+    src="//cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js"></script>
 
-            </div>
-           <div class="varname"><p title="Length">Length(mm)</p>
-                <input id="lengthspinner"/></div>
-            <div id="lengthslider"></div><br>
-            <div class="varname"><p title="Damping Ratio" style="font-size: 14px;">Damping Ratio</p>
-                <input id="dampspinner"/></div>
-            <div id="dampslider"></div><br>
-            
-	 <div class="varname"><p title="Mass" id = "centremasstxt">Centre Mass(kg)</p>
-                <input id="massspinner"/></div>
-            <div id="massslider"></div><br>
-        </div>
+  <script defer src="js/script.js"></script>
+</head>
+
+<body onload="varinit();startsim();
+">
+  <!-- Logo -->
+  <!-- Experiment Title -->
+  <!-- Tools Sections -->
+  <!-- Tools Container -->
+  <!-- Simulation Container -->
+  <div class="title-div-container">
+
+    <div class="title-div">
+      <!-- <span class="round left-top"></span>
+          <span class="round left-bottom"></span>
+          <span class="round right-top"></span>
+          <span class="round right-bottom"></span> -->
+      <div class="logo-div">
+        <a href="#"><img src="images/logo_nitk.png" alt="Logo" class="logo" /></a>
+      </div>
+      <h1>Single Degree of Freedom System</h1>
     </div>
-    <!-- DND-Title of region for controls display -->
- <div id="ctrltitle">CONTROLS</div>
-    <!-- DND-Copyright display-->
- <div id="copyright" title="Developer : SOLVEr"> Copyright &copy; SOLVE The Virtual Lab @ NITK Surathkal </div>
-  <div id="controls">
-      <!-- Region for User controls of simulation -->
-    <img id="playpausebutton" onclick="simstate()" src="./images/blueplaydull.png" />
-    <img id="graphbutton" onclick="changescreen()" src="./images/graphbutton.png" />
   </div>
- </div> <!-- Container div close -->
+  <div class="container">
+    <div class="sidebar">
+      <ul class="tool-menu">
+        <li class="tool-list">
+          <a href="#simulation" class="tool-link" title="Simulation"><svg xmlns="http://www.w3.org/2000/svg"
+              fill="#089B93" viewBox="0 0 24 24" stroke-width="1.5" stroke="#ffffff" class="icons">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M3 8.25V18a2.25 2.25 0 002.25 2.25h13.5A2.25 2.25 0 0021 18V8.25m-18 0V6a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 6v2.25m-18 0h18M5.25 6h.008v.008H5.25V6zM7.5 6h.008v.008H7.5V6zm2.25 0h.008v.008H9.75V6z" />
+            </svg>
+          </a>
+          <span>Simulation</span>
+        </li>
+        <li class="tool-list">
+          <a href="#variables" class="tool-link" title="Variables"><svg xmlns="http://www.w3.org/2000/svg"
+              fill="#ffffff" viewBox="0 0 24 24" stroke-width="1.5" stroke="#089B93" class="icons">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M4.745 3A23.933 23.933 0 003 12c0 3.183.62 6.22 1.745 9M19.5 3c.967 2.78 1.5 5.817 1.5 9s-.533 6.22-1.5 9M8.25 8.885l1.444-.89a.75.75 0 011.105.402l2.402 7.206a.75.75 0 001.104.401l1.445-.889m-8.25.75l.213.09a1.687 1.687 0 002.062-.617l4.45-6.676a1.688 1.688 0 012.062-.618l.213.09" />
+            </svg></a>
+          <span>Variables</span>
+        </li>
+        <li class="tool-list">
+          <a href="#comments" class="tool-link" title="Results"><svg xmlns="http://www.w3.org/2000/svg" fill="#089B93"
+              viewBox="0 0 24 24" stroke-width="1.5" stroke="#ffffff" class="icons">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg></a>
+          <span>Results</span>
+        </li>
+        <li class="tool-list" title="Play/Pause">
+          <img id="playpausebutton" onclick="simstate()" src="images/bluepausedull.svg" alt="" class="icons" />
+          <span class="playPause">Pause</span>
+        </li>
+        <li class="tool-list" title="Graph">
+          <img id="graphbutton" onclick="plotgraph()" src="./images/graphbutton.svg" alt="" class="icons" />
+          <span>Graph</span>
+        </li>
+      </ul>
+    </div>
+    <div class="main">
+      <div class="main-section">
+        <div id="simulation" class="main__task-div">
+          <!-- <div id="controls" class="div__control">
+              <img id="playpausebutton" onclick="simstate()" src="./images/blueplaydull.svg" alt="" />
+              <img id="graphbutton" onclick="plotgraph()" src="./images/graphbutton.svg" alt="" />
+            </div> -->
 
- </body>
+          <!-- SAMPLE CODE -->
+          <h3 class="task-title">Simulation</h3>
+          <div class="canvas__div">
+            <div class="img-div">
+              <div class="circuit-dia">
+                <img src="images/massSystem.PNG" alt="mass system" />
+                <span class="tooltip cir-tooltip"></span>
+              </div>
+              <div class="cross-img">
+                <img src="images/crossI.PNG" alt="cross section" />
+                <span class="tooltip sec-tooltip">
+                  ISMB: 100, h: 100mm, b: 75mm, t1: 4mm, t2: 7mm, Ixx: 257.5 cm<sup>4</sup>, Iyy: 40.8 cm<sup>4</sup>,
+                  Area: 14.6 cm<sup>2</sup>,
+                </span>
+              </div>
+              <div class="other-sec display-hide">
+                <div>
+                  <label for="CsArea">C/s Area(m^2)</label>
+                  <input type="number" class="var-spinner" id="CsArea" name="value" />
+                </div>
+                <div>
+                  <label for="Ivalue">Ixx(m^4) </label>
+                  <input type="number" class="var-spinner" id="Ivalue" name="value" />
+                </div>
+              </div>
+            </div>
+            <div id="canvas-container">
+
+              <canvas id="canvas" class="canvas"></canvas>
+
+            </div>
+            <div class="graph-div display-hide">
+              <canvas id="graphscreen1" class="canvas"></canvas>
+            </div>
+            <div class="graph-div display-hide">
+              <canvas id="graphscreen2" class="canvas"></canvas>
+            </div>
+          </div>
+        </div>
+        <div id="variables" class="main__task-div">
+          <div class="settings-sections">
+            <h3 class="task-title">Variables</h3>
+            <div class="variables-sections">
+            
+            <div class="var-div">
+              <div class="input-container">
+                <label for="materials">Materials</label>
+                <select
+                  class="var-select select-menu"
+                  name="materials"
+                  id="materials"
+                >
+                  <option class="select-menu" value="0">Steel</option>
+                  <option class="select-menu" value="1">Aluminium</option>
+                  <option class="select-menu" value="2">Bronze</option>
+                </select>
+              </div>
+            </div>
+            <div class="var-div selsec">
+              <div class="input-container">
+                <label for="sections">Sections</label>
+                <select
+                  class="var-select select-menu sbox"
+                  name="sections"
+                  id="sections"
+                >
+                  <option class="select-menu" value="0">I section</option>
+                  <option class="select-menu" value="1">T section</option>
+                  <option class="select-menu" value="2">C section</option>
+                  <option class="select-menu" value="3">L section</option>
+                  <option class="select-menu" value="4">Square section</option>
+                  <option class="select-menu" value="5"> Circular section</option>
+                  <option class="select-menu" value="6">Other section</option>
+                </select>
+              </div>
+            </div>
+            <div class="var-div">
+              <div class="input-container len">
+              <label for="lengthSpinner">Length</label>
+              <input class="var-spinner" id="lengthSpinner" name="value" />
+              <span class="mm">mm</span>
+            </div>
+              <div class="var-slider slider1" id="lengthSlider"></div>
+            </div>
+            <div class="var-div">
+              <div class="input-container damp">
+              <label for="dampSpinner">Damping Ratio</label>
+              <input class="var-spinner" id="dampSpinner" name="value" />
+            </div>
+              <div class="var-slider slider2" id="dampSlider"></div>
+            </div>
+            <div class="var-div">
+              <div class="input-container mass">
+              <label for="massSpinner">Centre Mass</label>
+              <input class="var-spinner" id="massSpinner" name="value" />
+              <span class="mm">kg</span>
+            </div>
+              <div class="var-slider slider3" id="massSlider"></div>
+            </div>
+          </div>
+          </div>
+        </div>
+        <div id="comments" class="main__task-div">
+          <h3 class="task-title">Results</h3>
+          <div class="settings-sections">
+            <div class="comment-sections">
+              <p id="p1">m = <span id="mass"></span></p>
+              <p id="p2">k = <span id="k"></span></p>
+              <p id="p3">c = <sapn id="c"></span></p>
+                 <p>&#969;<sub>n</sub> = <span id="wn"></span></p>
+                <p>&#969;<sub>d</sub> = <span id="wd"></span></p>
+              <div id="omegavalues">
+                  
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="main__task-div footer">
+          <p>Copyright © SOLVE The Virtual Lab @ NITK Surathkal</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
 </html>
