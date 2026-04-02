@@ -1,0 +1,11 @@
+{
+  _: [],
+  f: [
+    '/home/runner/work/exp-simply-supported-beam-nitk/exp-simply-supported-beam-nitk/experiment-descriptor.json'
+  ],
+  files: [
+    '/home/runner/work/exp-simply-supported-beam-nitk/exp-simply-supported-beam-nitk/experiment-descriptor.json'
+  ],
+  '$0': 'validate'
+}
+Validated true

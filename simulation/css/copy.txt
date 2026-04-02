@@ -1,0 +1,4 @@
+v1: 
+--clr-title-background: #0c4a6e;
+--clr-text-clr: #e2e8f0;
+--clr-container-clr: #60a5fa;
